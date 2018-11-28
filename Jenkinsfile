@@ -27,25 +27,8 @@ pipeline {
             }
 
         }
-        
-        stage('Setup databases') {
-            
-            agent any
-            
-            steps {
-
-                    sh  '''
-
-                        #docker-compose up -d
-
-                        #sleep 60
-
-                        '''
-            }
-
-        }
-
-
+     
+	 
         stage('Test') {
 
             agent {
@@ -56,6 +39,8 @@ pipeline {
                     args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
+			
+			when { not {buildingTag() } }
 
             steps {
 
@@ -191,7 +176,7 @@ pipeline {
                 
                 sh  '''
                 
-                #docker-compose down -v
+               
 
                 '''
 
