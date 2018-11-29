@@ -1,6 +1,8 @@
 ﻿using Moq;
 using Oragon.Contexts.NHibernate;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 
@@ -77,10 +79,51 @@ namespace Oragon.Context.Tests
         }
 
 
-        public class FNHSFB : FluentNHibernateSessionFactoryBuilderForAnything<FluentNHibernate.Cfg.Db.SQLiteConfiguration, FluentNHibernate.Cfg.Db.ConnectionStringBuilder> { 
-        
+        public class FNHSFB : FluentNHibernateSessionFactoryBuilderForAnything<FluentNHibernate.Cfg.Db.SQLiteConfiguration, FluentNHibernate.Cfg.Db.ConnectionStringBuilder>
+        {
+
+            public FNHSFB()
+            {
+                this.OnExposeConfiguration = (it) => { };
+            }
         }
 
+
+        [Fact]
+        public void TestEmptyTypes()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+                new FNHSFB().BuildSessionFactory()
+
+            );
+        }
+
+
+
+        [Fact]
+        public void EventListeners()
+        {
+            FNHSFB sfb = new FNHSFB()
+            {
+                TypeNames = new List<string>()
+                {
+                    "Oragon.Context.Tests.Integrated.AppSym.Domain.Classroom, Oragon.Context.Tests",
+                    "Oragon.Context.Tests.Integrated.AppSym.Data.Mapping.ClassroomMapper, Oragon.Context.Tests"
+                },
+                BaseConfiguration = FluentNHibernate.Cfg.Db.SQLiteConfiguration.Standard.InMemory()
+            };
+
+            string[] propNames = typeof(NHibernate.Cfg.Configuration).GetProperties().Where(It => It.Name.EndsWith("EventListeners") && !It.Name.StartsWith("EventListeners")).Select(it => it.Name).ToArray();
+
+            foreach (string propName in propNames)
+            {
+                Oragon.Spring.Expressions.ExpressionEvaluator.SetValue(sfb, propName, new object[] { null });
+            }
+
+
+            sfb.BuildSessionFactory();
+
+        }
 
     }
 }

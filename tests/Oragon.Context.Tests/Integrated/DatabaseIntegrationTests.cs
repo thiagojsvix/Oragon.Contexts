@@ -65,7 +65,7 @@ namespace Oragon.Context.Tests.Integrated
 
                             network.Connect(container, dbTechnology);
 
-                            container.WaitUntilTextFoundInLog(containerLogsParameters, textTofound, 10, getLogsWaitTime);
+                            container.WaitUntilTextFoundInLog(containerLogsParameters, textTofound, getLogsRetryCount, getLogsWaitTime);
 
                             ContainerInspectResponse containerInfo = container.Inspect();
 

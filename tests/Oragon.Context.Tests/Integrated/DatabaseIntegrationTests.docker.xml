@@ -79,7 +79,7 @@
     ////////////////////////////////////////////////////////////////////////////////////
     -->
     <object name="mysql.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
-        <property name="Image" value="mysql:5" />
+        <property name="Image" value="mysql:8" />
         <property name="Env">
             <list element-type="String">
                 <value><![CDATA[MYSQL_ROOT_PASSWORD=PbfSeBmdy34KvTGwWUTHdxht]]></value>
@@ -97,7 +97,7 @@
         </property>
     </object>
     <object name="mysql.ExpectedText" type="string" factory-method="Copy">
-        <constructor-arg index="0" value="mysqld: ready for connections"/>
+        <constructor-arg index="0" value="port: 3306  MySQL"/>
     </object>
     <alias alias="mysql.ContainerStartParameters" name="default.ContainerStartParameters"/>
     <alias alias="mysql.ContainerLogsParameters" name="default.ContainerLogsParameters"/>
@@ -147,7 +147,13 @@
     ////////////////////////////////////////////////////////////////////////////////////
     -->
     <object name="sqlite.CreateContainerParameters" type="Docker.DotNet.Models.CreateContainerParameters, Docker.DotNet" parent="default.CreateContainerParameters">
-        <property name="Image" value="nginx:latest" />
+        <property name="Image" value="busybox:latest" />
+        <property name="Cmd">
+            <list element-type="string">
+                <value>sleep</value>
+                <value>600</value>
+            </list>
+        </property>
         <property name="ExposedPorts">
             <dictionary key-type="string" value-type="Docker.DotNet.Models.EmptyStruct, Docker.DotNet">
                 <entry key="22/tcp">
@@ -197,10 +203,10 @@
     <object name="default.GetLogsWaitTime" type="System.TimeSpan">
         <constructor-arg name="hours" value="0" />
         <constructor-arg name="minutes" value="0" />
-        <constructor-arg name="seconds" value="10" />
+        <constructor-arg name="seconds" value="5" />
     </object>
     <object name="default.GetLogsRetryCount" type="System.Int32" factory-method="Parse">
-        <constructor-arg index="0" value="20" />
+        <constructor-arg index="0" value="30" />
     </object>
 
 

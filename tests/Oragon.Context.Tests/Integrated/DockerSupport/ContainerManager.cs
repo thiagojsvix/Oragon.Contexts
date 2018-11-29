@@ -98,11 +98,11 @@ namespace Oragon.Context.Tests.Integrated.DockerSupport
 
                 Console.WriteLine($"Stopping Container {this.CreateResponse.ID}");
 
-                this.Docker.Containers.StopContainerAsync(this.CreateResponse.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 30 }).GetAwaiter().GetResult();
+                this.Docker.Containers.StopContainerAsync(this.CreateResponse.ID, new ContainerStopParameters() { WaitBeforeKillSeconds = 5 }).GetAwaiter().GetResult();
 
                 Console.WriteLine($"Container Stopped {this.CreateResponse.ID}");
 
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
 
                 Console.WriteLine($"Removing Container {this.CreateResponse.ID}");
 
